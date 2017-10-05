@@ -106,8 +106,6 @@ valeur_holdings = total_shares.multiply(data, axis=1)
     #0.15% pour les market makers (vente d'actifs)
     #0.25% pour les market takers (achat d'actifs)
     
-fees = 0
-
 portfolio = pd.DataFrame(index=trades.index)
 portfolio['cash'] = 0.0
 
@@ -135,6 +133,10 @@ portfolio['holdings'] = valeur_holdings.sum(axis=1)
 portfolio['total'] = portfolio['holdings'] + portfolio['cash']
 
 portfolio['returns'] = (portfolio['total']/ portfolio['total'].shift(1)) - 1
+portfolio['returns'] = portfolio['returns'].replace(np.nan, 0.0)
+
+portfolio['cumul_returns'] = portfolio['returns'] + 1
+portfolio['cumul_returns'] = portfolio['cumul_returns'].cumprod()
 
 meanRet = portfolio['returns'].mean()
 stddev = portfolio['returns'].std()
@@ -150,7 +152,8 @@ import matplotlib.pyplot as plt
 fig = plt.figure()
 ax1 = fig.add_subplot(111)
 
-portfolio[['total', 'holdings', 'cash']].plot(ax=ax1, grid=True)
+
+portfolio[['cumul_returns']].plot(ax=ax1, grid=True)
 
 #g_tMC.plot_benchmark(benchmark)
 
