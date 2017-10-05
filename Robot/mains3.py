@@ -48,7 +48,7 @@ nombre_shares_achetees = shares.multiply(
 columns = nombre_shares_achetees.columns
 nombre_shares_possedees = nombre_shares_achetees.copy()
 
-for i in range(len(columns)-1):
+for i in range(len(columns)):
     a1 = nombre_shares_achetees[columns[i]]
     a = a1[~np.isnan(a1)]
 

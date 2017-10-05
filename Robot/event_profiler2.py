@@ -13,14 +13,16 @@ import os
 import copy
 import numpy as np
 import datetime
+from random import *
 
 
 #%%
 #
-def get_data():
+def get_data(rand=False):
     
     datas_list = os.listdir('Data')
     df = pd.DataFrame()
+    
     k=0
     for i in datas_list:
         df2 = pd.read_csv('Data\\'+i)
@@ -32,7 +34,20 @@ def get_data():
         k+=1
     df = df.fillna(0.0)
     df.index = pd.to_datetime(df.index)
-    return df
+    
+    if rand:
+        numero_data = set()
+        for i in range(rand):
+            num = randint(0, len(datas_list)-1)
+            while (num in numero_data):
+                num = randint(0, len(datas_list)-1)
+            numero_data.add(num)
+        b = list(numero_data)
+        print(b)
+        return df.ix[:, numero_data]
+        
+    else:
+        return df
 
 
 #%%
