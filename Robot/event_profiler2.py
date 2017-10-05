@@ -18,7 +18,7 @@ from random import *
 
 #%%
 #
-def get_data(rand=False):
+def get_data(rand=False, name=False):
     
     datas_list = os.listdir('Data')
     df = pd.DataFrame()
@@ -42,9 +42,10 @@ def get_data(rand=False):
             while (num in numero_data):
                 num = randint(0, len(datas_list)-1)
             numero_data.add(num)
-        b = list(numero_data)
-        print(b)
         return df.ix[:, numero_data]
+    
+    if name:
+        return df.loc[:, name]
         
     else:
         return df
