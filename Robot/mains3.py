@@ -157,3 +157,7 @@ portfolio[['cumul_returns']].plot(ax=ax1, grid=True)
 
 #g_tMC.plot_benchmark(benchmark)
 
+#%%
+
+portfolio['returns'].hist(bins=500)
+
