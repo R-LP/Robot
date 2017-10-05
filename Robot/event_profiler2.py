@@ -96,8 +96,6 @@ def event_profiler(dataset, benchmark):
                 df_events.iloc[k] = [time, s_sym, 'SELL']
                 k+=1
             
-       # df_events['BTC_AMP'][ldt_timestamps[2]] = 1
-      #  print(df_events['BTC_AMP'][ldt_timestamps[2]])
     print('Success !')
     
     df_events = df_events.dropna()

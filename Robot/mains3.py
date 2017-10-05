@@ -140,7 +140,7 @@ portfolio['cumul_returns'] = portfolio['cumul_returns'].cumprod()
 
 meanRet = portfolio['returns'].mean()
 stddev = portfolio['returns'].std()
-sharpeRatio = meanRet / stddev
+sharpeRatio = sqrt(len(portfolio.index))*meanRet / stddev
 total = (portfolio['total'].iloc[-1]/portfolio['total'].iloc[0]) - 1
 
 
