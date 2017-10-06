@@ -50,36 +50,40 @@ def get_totalMarketCap(start = date(2016, 1, 1), end = date(2017, 9, 25)):
         volume.append(i[1])
     
     df_time = pd.to_datetime(timeStamp, unit='ms')
-    df = pd.DataFrame(marketValue, index=df_time)
-    df.columns = ['market_cap_($)']
+    df = pd.DataFrame({'market_cap_($)' : marketValue, 
+                       'volume' :  volume}, index=df_time)
+
     
-    #Les datas données par Coinbase ne sont pas toujours à la même heure
-    #Alors que la plupart sont à 16h00, certaines sont à 16h02 ou 15h57
-    #Pour que nos timestamp correspondent, on corrige ces dates pour les
-    #remettre à 16h00
+    return df
     
-    newIndex = []
-    for i in df.index:
-        if ((i.to_datetime()).minute != 0):
-            i = (i.to_datetime()).replace(minute=0)
-            i = pd.to_datetime(i)
-            
-            if((i.to_datetime()).hour != 16):
-                i = (i.to_datetime()).replace(hour=16)
-                i = pd.to_datetime(i)
-                newIndex.append(i)
-            else:
-                newIndex.append(i)
-        else:
-            newIndex.append(i)
-            
-    df['newIndex'] = newIndex
-    benchmarkIndexed = df.set_index(df['newIndex'])
-    benchmarkIndexed = benchmarkIndexed.drop('newIndex', axis=1)
-    
-    benchmarkIndexed['volume'] = volume
-    benchmarkIndexed.to_csv('benchmark.csv')
-    return benchmarkIndexed
+#    #Les datas données par Coinbase ne sont pas toujours à la même heure
+#    #Alors que la plupart sont à 16h00, certaines sont à 16h02 ou 15h57
+#    #Pour que nos timestamp correspondent, on corrige ces dates pour les
+#    #remettre à 16h00
+#    
+#    newIndex = []
+#    for i in df.index:
+#        if ((i.to_datetime()).minute != 0):
+#            i = (i.to_datetime()).replace(minute=0)
+#            i = pd.to_datetime(i)
+#            
+#            if((i.to_datetime()).hour != 16):
+#                i = (i.to_datetime()).replace(hour=16)
+#                i = pd.to_datetime(i)
+#                newIndex.append(i)
+#            else:
+#                newIndex.append(i)
+#        else:
+#            newIndex.append(i)
+#            
+#    df['newIndex'] = newIndex
+#    benchmarkIndexed = df.set_index(df['newIndex'])
+#    benchmarkIndexed = benchmarkIndexed.drop('newIndex', axis=1)
+#    
+#    benchmarkIndexed['volume'] = volume
+#    benchmarkIndexed.to_csv('benchmark.csv')
+
+#    return benchmarkIndexed
     
 
 def plot_benchmark(benchmark):

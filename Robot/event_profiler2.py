@@ -58,15 +58,17 @@ def event_profiler(dataset, benchmark):
     s_market_sym = 'market_cap_($)'
 
     # Time stamps for the event range    
-    data = benchmark.join(dataset)
-    ldt_timestamps = data.index
+    benchmark2 = benchmark.reindex(dataset.index, method='pad')
+    benchmark2 = benchmark2.fillna(method='pad', limit=2)
     
+    data = dataset.join(benchmark2)
+    
+    ldt_timestamps = data.index    
     cols = ['Date', 'Pair', 'Order']
     
     size = int(round(len(ldt_timestamps) * len(dataset.columns) / 3))
     df_events = pd.DataFrame(columns=cols, index=range(size))
     
-
     k = 0
     print('Finding events in progress', end='')
     for s_sym in dataset.columns:

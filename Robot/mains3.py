@@ -12,6 +12,8 @@ benchmark = g_tMC.get_totalMarketCap()
 #%%
 import event_profiler2 as e_p2
 data = e_p2.get_data()
+data = data.iloc[:round(len(data.index)/2)]
+data = data.dropna(how='all', axis=1)
 #events = e_p2.find_events_news(data, benchmark)
 
 #%%
@@ -138,9 +140,10 @@ portfolio['returns'] = portfolio['returns'].replace(np.nan, 0.0)
 portfolio['cumul_returns'] = portfolio['returns'] + 1
 portfolio['cumul_returns'] = portfolio['cumul_returns'].cumprod()
 
-meanRet = portfolio['returns'].mean()
-stddev = portfolio['returns'].std()
-sharpeRatio = sqrt(len(portfolio.index))*meanRet / stddev
+k = 6*365
+meanRet = portfolio['returns'].mean() *k
+stddev = portfolio['returns'].std() *np.sqrt(k)
+sharpeRatio = meanRet / stddev
 total = (portfolio['total'].iloc[-1]/portfolio['total'].iloc[0]) - 1
 
 
@@ -153,7 +156,7 @@ fig = plt.figure()
 ax1 = fig.add_subplot(111)
 
 
-portfolio[['cumul_returns']].plot(ax=ax1, grid=True)
+portfolio[['total', 'cash', 'holdings']].plot(ax=ax1, grid=True)
 
 #g_tMC.plot_benchmark(benchmark)
 
