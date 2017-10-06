@@ -32,7 +32,6 @@ def get_data(rand=False, name=False):
         df = df.merge(df3, left_index=True, right_index=True, how='outer')
         datas_list[k] = i
         k+=1
-    df = df.fillna(0.0)
     df.index = pd.to_datetime(df.index)
     
     if rand:
