@@ -95,3 +95,26 @@ plt.scatter(min_vol_port[1],min_vol_port[0],marker=(5,1,0),color='g',s=1000)
 
 
 plt.show()
+
+
+#%%
+best = num_portfolios*0.1
+best = results_frame[results_frame['sharpe'] > results_frame['sharpe'].quantile(.99999)]
+
+
+mean_best = best.iloc[:,3:].mean()
+
+best_return = np.sum(mean_returns * mean_best) * k
+best_std_dev = np.sqrt(np.dot(mean_best.T,np.dot(cov_matrix, weights))) * np.sqrt(k)
+ 
+#store results in results array
+best_results = np.zeros(3)
+best_results[0] = best_return
+best_results[1] = best_std_dev
+#store Sharpe Ratio (return / volatility) - risk free rate element excluded for simplicity
+best_results[2] = best_results[0] / best_results[1]
+
+#%%
+
+mean_best.plot(kind='bar')
+
